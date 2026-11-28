@@ -104,18 +104,20 @@ class WorksToolchainTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "Builds catalog"):
                     works_toolchain.load(self.fixture(props=props), environ={})
 
-    def test_actual_runtime_version_and_bytes_must_match_the_owner(self):
+    def test_runtime_bytes_and_cli_version_must_match_the_owner(self):
         root = self.fixture()
         runtime = root / "daprd"
-        for version, cli, changed, accepted in (
-            ("1.18.7", "1.18.2", False, True),
-            ("1.18.3", "1.18.2", False, False),
-            ("1.18.7", "1.18.0", False, False),
-            ("1.18.7", "1.18.2", True, False),
+        for cli, changed, accepted in (
+            ("1.18.2", False, True),
+            ("1.18.0", False, False),
+            ("1.18.2", True, False),
         ):
-            with self.subTest(version=version, cli=cli, changed=changed):
+            with self.subTest(cli=cli, changed=changed):
                 runtime.write_bytes(b"changed runtime" if changed else b"qualified runtime")
-                with patch.object(works_toolchain.subprocess, "check_output", side_effect=[version, "CLI version: " + cli + "\nRuntime version: " + version]):
+                runtime.chmod(0o755)
+                # Dapr CLI can report a different runtime from the explicit path.
+                with patch.object(works_toolchain.subprocess, "check_output",
+                                  return_value="CLI version: " + cli + "\nRuntime version: 1.18.3") as execute:
                     if accepted:
                         qualified = works_toolchain.qualify(root, runtime, environ={})
                         self.assertEqual(qualified["runtimeSha256"], QUALIFIED)
@@ -123,6 +125,20 @@ class WorksToolchainTests(unittest.TestCase):
                     else:
                         with self.assertRaisesRegex(ValueError, "qualified Works proof"):
                             works_toolchain.qualify(root, runtime, environ={})
+                    if changed:
+                        execute.assert_not_called()
+                    else:
+                        execute.assert_called_once_with(["dapr", "--version"], text=True)
+
+    def test_qualified_runtime_must_still_be_executable(self):
+        root = self.fixture()
+        runtime = root / "daprd"
+        runtime.write_bytes(b"qualified runtime")
+        runtime.chmod(0o600)
+        with patch.object(works_toolchain.subprocess, "check_output") as execute:
+            with self.assertRaises(PermissionError):
+                works_toolchain.qualify(root, runtime, environ={})
+        execute.assert_not_called()
 
     def test_wrong_hash_executable_is_refused_without_running_any_tool(self):
         root = self.fixture()

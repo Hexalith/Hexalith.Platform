@@ -67,31 +67,43 @@ def materialize(platform_root, output, source_root=None):
         raise ValueError("The bound producer directory must be outside the original checkout.")
     environment = inspection_environment()
 
-    def git(*arguments, check=True):
-        return subprocess.run(
-            ["git", "-c", "submodule.recurse=false", *map(str, arguments)],
-            env=environment,
-            capture_output=True,
-            text=True,
-            check=check,
-        )
-
     if (
         not (source / ".git").exists()
-        or Path(git("-C", source, "rev-parse", "--show-toplevel").stdout.strip()).resolve() != source
+        or Path(subprocess.run(
+            ["git", "-C", str(source), "rev-parse", "--show-toplevel"],
+            env=environment, capture_output=True, text=True, check=True,
+        ).stdout.strip()).resolve() != source
     ):
         raise ValueError("The bound producer requires an initialized physical Builds checkout.")
     load_binding(platform_root / "eng/builds-tuple.json")
     revision = recorded_gitlink(platform_root, environment=environment)
     output.parent.mkdir(parents=True, exist_ok=True)
-    git("clone", "--quiet", "--shared", "--no-checkout", "--", source, output)
-    if git("-C", output, "cat-file", "-e", revision + "^{commit}", check=False).returncode:
-        origin = git("-C", source, "remote", "get-url", "origin").stdout.strip()
-        git("-C", output, "fetch", "--quiet", "--no-recurse-submodules", "--depth=1", "--", origin, revision)
+    subprocess.run(
+        ["git", "clone", "--quiet", "--shared", "--no-checkout", "--", str(source), str(output)],
+        env=environment, capture_output=True, text=True, check=True,
+    )
+    if subprocess.run(
+        ["git", "-C", str(output), "cat-file", "-e", revision + "^{commit}"],
+        env=environment, capture_output=True, text=True,
+    ).returncode:
+        origin = subprocess.run(
+            ["git", "-C", str(source), "remote", "get-url", "origin"],
+            env=environment, capture_output=True, text=True, check=True,
+        ).stdout.strip()
+        subprocess.run(
+            ["git", "-C", str(output), "fetch", "--quiet", "--no-auto-maintenance", "--no-recurse-submodules",
+             "--depth=1", "--", origin, revision],
+            env=environment, capture_output=True, text=True, check=True,
+        )
     # The pin checker authenticates exact Git bytes, while the producer normally
     # checks this text file out as CRLF. Override conversion only in this private clone.
     (output / ".git/info/attributes").write_text("Props/Directory.Packages.props -text\n")
-    git("-C", output, "checkout", "--quiet", "--detach", revision)
+    # recorded_gitlink accepts only a full hexadecimal object ID. Checkout
+    # requires the revision before --, which ends the revision arguments.
+    subprocess.run(
+        ["git", "-C", str(output), "checkout", "--quiet", "--detach", "--no-recurse-submodules", revision, "--"],
+        env=environment, capture_output=True, text=True, check=True,
+    )
     return verify_bound_checkout(platform_root, output)
 
 

@@ -1041,7 +1041,11 @@ def require_published_runtime_source(snapshot, published_producers):
     if len(commits) != 1:
         raise ValueError("Published SDK archives do not identify one compatible producer commit")
     commit = commits.pop()
-    archive = subprocess.check_output(["git", "-C", snapshot["root"], "archive", commit, "src", *BUILD_FILES, REALM_MANIFEST])
+    archive = subprocess.check_output([
+        "git", "-C", snapshot["root"], "archive", "--format=tar", "--", commit, "src",
+        "Directory.Build.props", "Directory.Build.targets", "Directory.Packages.props", "global.json",
+        "module/hexalith.module-manifest.v2.json",
+    ])
     with tarfile.open(fileobj=io.BytesIO(archive)) as source:
         members = source.getmembers()
         if any(not (entry.isfile() or entry.isdir()) for entry in members):

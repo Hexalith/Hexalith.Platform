@@ -38,9 +38,13 @@ def owner_pins(root, version, tools=None, selected=None):
     (root / "hexalith-platform.json").write_text(json.dumps({"toolVersionRange": selected or tool_version_range(version)}))
 
 
-def synthetic_archive(path, version, framework="net11.0", tooling=b"synthetic tooling"):
+def synthetic_archive(path, version, framework="net11.0", tooling=b"synthetic tooling", source=SOURCE):
     prefix = "tools/" + framework + "/any/"
     with zipfile.ZipFile(path, "w") as package:
+        package.writestr("Hexalith.Builds.Module.Cli.nuspec",
+                         f'<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd"><metadata>'
+                         f'<id>Hexalith.Builds.Module.Cli</id><version>{version}</version>'
+                         f'<repository commit="{source}" /></metadata></package>')
         package.writestr(prefix + "Hexalith.Builds.Tooling.dll", tooling)
         package.writestr(prefix + "Hexalith.Builds.Module.Cli.dll", b"synthetic CLI")
         package.writestr(prefix + "g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.dll", b"synthetic host")
@@ -165,7 +169,7 @@ class CatalogTests(unittest.TestCase):
     def test_dirty_catalog_and_git_errors_retain_public_diff_observation(self):
         canonical = b"<Project />\n"
         public_diff = "diff --git a/Props/Directory.Packages.props b/Props/Directory.Packages.props\n-<Project />\n+<Project Changed='true' />\n"
-        command = ["git", "diff", "--exit-code", SOURCE, "--", "Props/Directory.Packages.props"]
+        command = ["git", "diff", "--exit-code", "--end-of-options", SOURCE, "--", "Props/Directory.Packages.props"]
         for code, stdout, stderr in ((1, public_diff, ""), (128, "", "fatal: public catalog comparison failed")):
             with self.subTest(exitCode=code), \
                     patch("builds_tuple.subprocess.check_output", side_effect=[SOURCE.encode(), BLOB.encode(), canonical]), \
@@ -481,7 +485,7 @@ class PreparationTests(unittest.TestCase):
         self.prefix = synthetic_archive(self.archive, "6.0.5")
         self.release = {"releaseTag": "v6.0.5", "tagCommit": SOURCE, "evidenceOnly": True, "qualificationCredit": False}
 
-    def prepare(self, stack, output, *, locked=None, executable=None, recorded=False, release=None, signature=None):
+    def prepare(self, stack, output, *, locked=None, recorded=False, release=None, signature=None):
         arguments = ["prepare", "--archive", str(self.archive), "--output", str(output)] + (["--require-recorded"] if recorded else [])
         stack.enter_context(patch.object(sys, "argv", arguments))
         stack.enter_context(patch.object(prepare_builds_artifacts, "load_binding", return_value=binding()))
@@ -495,16 +499,16 @@ class PreparationTests(unittest.TestCase):
             side_effect=release, return_value=self.release))
         verify = stack.enter_context(patch.object(prepare_builds_artifacts, "verify_signature",
             side_effect=signature, return_value=subprocess.CompletedProcess([], 0, "verified control", "")))
-        version = stack.enter_context(patch.object(prepare_builds_artifacts.subprocess, "check_output",
-            return_value=executable or "6.0.5+" + SOURCE))
+        identity = stack.enter_context(patch.object(prepare_builds_artifacts, "verify_package_identity",
+            wraps=prepare_builds_artifacts.verify_package_identity))
         download = stack.enter_context(patch.object(prepare_builds_artifacts, "download"))
         stack.enter_context(contextlib.redirect_stdout(io.StringIO()))
-        return handoff, verify, version, download
+        return handoff, verify, identity, download
 
     def test_locked_archive_receipt_records_per_file_expected_identities(self):
         output = self.root / "prepared"
         with contextlib.ExitStack() as stack:
-            handoff, verify, version, download = self.prepare(stack, output)
+            handoff, verify, identity, download = self.prepare(stack, output)
             prepare_builds_artifacts.main()
         receipt = json.loads((output / "artifact-identity.json").read_bytes())
         tool = output / "published" / self.prefix
@@ -521,17 +525,17 @@ class PreparationTests(unittest.TestCase):
         self.assertEqual(Path(receipt["toolingAssembly"]).read_bytes(), b"synthetic tooling")
         self.assertEqual(handoff.call_args.args[:2], (binding(), SOURCE))
         self.assertEqual(verify.call_args.args[0], output / "hexalith.builds.module.cli.6.0.5.nupkg")
-        self.assertEqual(version.call_args.args[0], ["dotnet", str(tool / "Hexalith.Builds.Module.Cli.dll"), "--version"])
+        identity.assert_called_once_with(output / "published", "6.0.5", SOURCE)
         download.assert_not_called()
 
     def test_tampered_package_fails_naming_the_package_before_signature_or_extraction(self):
         output = self.root / "tampered"
         with contextlib.ExitStack() as stack:
-            _, verify, version, _ = self.prepare(stack, output, locked=lock("6.0.5", b"other bytes"))
+            _, verify, identity, _ = self.prepare(stack, output, locked=lock("6.0.5", b"other bytes"))
             with self.assertRaisesRegex(ValueError, "Tool package Hexalith.Builds.Module.Cli 6.0.5 has contentHash .* differs from eng/builds-tool.lock.json"):
                 prepare_builds_artifacts.main()
             verify.assert_not_called()
-            version.assert_not_called()
+            identity.assert_not_called()
         self.assertFalse((output / "published").exists())
         self.assertFalse((output / "artifact-identity.json").exists())
 
@@ -558,12 +562,13 @@ class PreparationTests(unittest.TestCase):
             download.assert_not_called()
         self.assertFalse(output.exists())
 
-    def test_executable_must_report_the_pinned_version_and_gitlink(self):
-        for executable in ("6.0.5+" + "e" * 40, "6.0.6+" + SOURCE, "6.0.5"):
-            output = self.root / ("executable-" + executable)
-            with self.subTest(executable=executable), contextlib.ExitStack() as stack:
-                self.prepare(stack, output, executable=executable)
-                with self.assertRaisesRegex(ValueError, "Published executable reports"):
+    def test_package_manifest_must_report_the_pinned_version_and_gitlink(self):
+        for version, source in (("6.0.5", "e" * 40), ("6.0.6", SOURCE), ("6.0.5", "")):
+            output = self.root / ("manifest-" + version + "-" + source)
+            synthetic_archive(self.archive, version, source=source)
+            with self.subTest(version=version, source=source), contextlib.ExitStack() as stack:
+                self.prepare(stack, output)
+                with self.assertRaisesRegex(ValueError, "The locked Builds manifest must identify"):
                     prepare_builds_artifacts.main()
             self.assertFalse((output / "artifact-identity.json").exists())
 
@@ -609,13 +614,13 @@ class PreparationTests(unittest.TestCase):
         with contextlib.ExitStack() as stack:
             stack.enter_context(patch.object(prepare_builds_artifacts, "materialize", return_value={"buildsRoot": str(self.root / "producer")}))
             stack.enter_context(patch.object(prepare_builds_artifacts, "recorded_preparation_context", side_effect=context))
-            handoff, _, version, _ = self.prepare(stack, output, recorded=True, signature=signature)
+            handoff, _, identity, _ = self.prepare(stack, output, recorded=True, signature=signature)
             stack.enter_context(contextlib.redirect_stdout(exported))
             with self.assertRaisesRegex(ValueError, "changed during artifact preparation"):
                 prepare_builds_artifacts.main()
         self.assertEqual([entry["platformRevision"] for entry in observations], ["a" * 40, "c" * 40])
         self.assertEqual(handoff.call_args.args[1], SOURCE)
-        version.assert_called_once()
+        identity.assert_called_once()
         self.assertTrue((output / "signature.stdout").is_file())
         self.assertFalse((output / "artifact-identity.json").exists())
         self.assertEqual(exported.getvalue(), "")

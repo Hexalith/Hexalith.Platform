@@ -371,6 +371,7 @@ class WorksEvidenceGateTests(unittest.TestCase):
         artifacts = self.directory() / 'evidence'
         runtime = self.directory() / 'daprd'
         runtime.write_bytes(runtime_bytes)
+        runtime.chmod(0o755)
         platform = Path(verify_works_host.__file__).resolve().parents[1]
         qualified = hashlib.sha256(b'qualified runtime').hexdigest()
         pins = {'daprCli': '1.18.2', 'daprRuntime': '1.18.7', 'linuxAmd64DaprdSha256': qualified,
@@ -442,7 +443,7 @@ class WorksEvidenceGateTests(unittest.TestCase):
                 patch('verify_works_host.select_control_plane_ports', return_value={'sentry': 41001, 'placement': 41002, 'scheduler': 41003}), \
                 patch('verify_works_host.isolated_daprd.prepare', side_effect=isolated), \
                 patch('works_toolchain.load', return_value=pins), \
-                patch('works_toolchain.subprocess.check_output', side_effect=['1.18.7', 'CLI version: 1.18.2\nRuntime version: 1.18.7']), \
+                patch('works_toolchain.subprocess.check_output', return_value='CLI version: 1.18.2\nRuntime version: 1.18.7'), \
                 patch.dict(os.environ, {'WORKS_PLATFORM_DAPRD': str(runtime)}), \
                 patch('verify_works_host.run_owned', side_effect=command):
             if monotonic_clock is not None:
@@ -883,8 +884,8 @@ class WorksEvidenceGateTests(unittest.TestCase):
         producers = {'Published.SDK': {'repositoryCommit': 'public-producer'}}
         with patch('verify_works_host.subprocess.check_output', return_value=self.archive(files)) as archive:
             self.assertTrue(require_published_runtime_source(snapshot, producers)['matchesPublishedProducer'])
-            self.assertIn('global.json', archive.call_args.args[0])
-            self.assertIn(manifest, archive.call_args.args[0])
+            self.assertEqual(archive.call_args.args[0][4:],
+                             ['--format=tar', '--', 'public-producer', 'src', *verify_works_host.BUILD_FILES, manifest])
             for name in ['src/Directory.Build.props', 'src/appsettings.json', 'global.json', manifest]:
                 changed = copy.deepcopy(snapshot)
                 changed['sourceFiles'][name] = 'unpublished-input'
