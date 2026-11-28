@@ -2921,3 +2921,16 @@ status: open
 - source_spec: `_bmad-output/implementation-artifacts/spec-3-6-wire-the-complete-local-platform-environment.md`
   summary: Declare `projects-conversation-start-setup` as a v2 manifest Dapr capability so `PlatformDaprBindings.Capabilities` and hosted publishing include it.
   evidence: Projects currently requires the `projects-conversation-start-setup` Redis state store (`keyPrefix: name`) in code without declaring a corresponding v2 manifest capability role, so Platform renders it directly in `PlatformAppModel.cs` (like `timesheets-readmodels`) outside `PlatformDaprBindings.Capabilities` and `PlatformHostedPublishing.Describe`.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-6-create-the-synthetic-tenant-in-the-complete-run.md`
+  summary: PlatformOperatorUpstream.Resolve (Tenants sidecar port, API token, gateway endpoint and app id) has no automated test.
+  evidence: Every relay test injects a hand-built upstream, and only the manual Tenants run 2e84cc31395cc793a786e8715f2ee019 exercised Resolve. Application-model resolution is verified only by live runs in this repo.
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-6-create-the-synthetic-tenant-in-the-complete-run.md`
+  summary: Record a live Parties selected-test run with the slice-5 Builds candidate, proving native preparation's CreateSyntheticTenant leaves the scheduled task a no-op, before releasing Builds.
+  evidence: No test or recorded run executes PlatformNativeTestPreparation's bound CreateSyntheticTenant. Reverting to CreateTenant keeps every test green but makes Parties runs fail with TenantAlreadyExistsRejection (HXR021).
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-6-create-the-synthetic-tenant-in-the-complete-run.md`
+  summary: Release the slice-5 Builds candidate (4c70470360a4732aa027d586dd09adfdae1692b9 plus review fixes), repin the Builds gitlink and tool version, then land the Platform candidate from refs/hexalith-candidates/story-3-6-slice-5.
+  evidence: The Platform candidate uses ICompositionOperatorTokenSource, CompositionStartupTask.Scope/InvocationPath and InvocationPathFor, none of which exist in the pinned Builds v6.10.0, so it builds only through the BuildsToolingAssemblyPath override.
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-6-create-the-synthetic-tenant-in-the-complete-run.md`
+  summary: Unverified (medium if true) — the realm-path Tenants workload assertion carries no tenant or domain binding claims; confirm the gateway accepts it for the bound submit.
+  evidence: PlatformRealmOperatorCredentials ignores the domain argument and issues an unbound assertion, while the runner-key path binds tenant and domain. Slice 4's complete live run (which now owns that acceptance) settles it.
