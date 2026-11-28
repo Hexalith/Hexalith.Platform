@@ -2906,3 +2906,10 @@ status: open
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-14-close-out-version-only-pins-and-retire-sdk42-artifacts.md`
   summary: Reconcile `_bmad-output/implementation-artifacts/epic-2-context.md` (and `epics.md:1724`) so the agent context retains historical 2.8/2.14 closure SHAs and marks the 2026-11-19 source-tuple reconciliation closed rather than pending.
   evidence: Step 1 recompiled `epic-2-context.md` from newer planning artifacts (`epics.md:1724` still describes audit action 1 in present tense), condensing 192 lines to 55 lines and dropping SHAs `566b9bfc`, `926c1c3f`, `f3f96b2e`, `707cf901`; deferred per Step 4's agent-context rule.
+
+## Deferred from: code review of spec-2-14-close-out-version-only-pins-and-retire-sdk42-artifacts.md (2026-11-28, Builds 6.9.2 review)
+
+- Reconcile the three `EventStoreExtensionCompositionTests` methods selected by both `current` and `extensions` against the approved suite counts. The overlap predates the profile rename. See `eng/tuple-ci-current-suites.json:294` and `eng/tuple-ci-extension-suites.json:11`.
+- Inspect evaluated Parties package versions as part of the unified catalog audit. `eng/current_catalog_view.py:131` compares the default property only, so an authenticated catalog can retain the default while overriding the Parties Contracts pin for one consumer. The full tuple restore checks actual package versions separately.
+- Include the required host-evidence job, the distinction between generated package-lock checks and the scoped NuGet locked-mode restore, and the explicit hold fields in the existing Epic 2 context reconciliation. See `epic-2-context.md:32` and `epic-2-context.md:42`.
+- Clarify Story 2.14 AC5 for release provenance. Preserve the existing declaration and source-binding updates required when EventStore, Tenants, or Memories releases change. See `eng/current_tuple_source.py:66` and the closeout spec's requirement to preserve these checks.
