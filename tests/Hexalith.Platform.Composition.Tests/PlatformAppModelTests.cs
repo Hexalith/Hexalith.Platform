@@ -44,6 +44,22 @@ public sealed partial class PlatformAppModelTests : IDisposable
         };
     }
 
+    /// <summary>Verifies that the prepared package entry refuses source plans before adding resources.</summary>
+    [Fact]
+    public void PreparedEntryRefusesSourceModeBeforeAddingResources()
+    {
+        using PlatformPartiesProofFixture fixture = new();
+        IDistributedApplicationBuilder builder = Builder();
+        CompositionRunPlan plan = fixture.Options.RunPlan! with
+        {
+            SourceMapping = fixture.Options.Mapping with { Mode = WorkspaceMode.Source },
+            PreparedNativeBuild = new(new string('a', 64), new Dictionary<string, NativeBuildComponent>(), new Dictionary<string, string>()),
+        };
+        Should.Throw<InvalidDataException>(() => PlatformAppModel.ComposePreparedRun(builder, plan, fixture.Key, fixture.Options.EventStoreSeedProject))
+            .Message.ShouldContain("prepared Platform package run");
+        builder.Resources.ShouldBeEmpty();
+    }
+
     [Theory]
     [InlineData("version")]
     [InlineData("commit")]
