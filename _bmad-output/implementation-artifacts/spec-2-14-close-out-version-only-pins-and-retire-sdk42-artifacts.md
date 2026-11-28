@@ -2,7 +2,7 @@
 title: '2.14 Close out version-only pins and retire residual SDK 4.2 artifacts'
 type: 'refactor'
 created: '2026-11-27'
-status: 'done'
+status: 'in-progress'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: 'e51cf194ac1caac65feb233c8c42491a7895518f'
@@ -73,19 +73,19 @@ Aliases: `E = eng`, `T = tests/Hexalith.Platform.Composition.Tests`.
 
 **Acceptance Criteria:**
 - Given `eng/`, `.github/workflows/tuple-ci.yml`, and `tests/Hexalith.Platform.Composition.Tests/`, when scanned for dead SDK 4.2 view code or duplicate `PlatformSdk42` test classes, then none remain while genuine historical fixtures and `.csproj` `>= 4.2.0` floors remain intact.
-- Given current `HEAD` pins (`Builds 6.9.1`, unified owner cohort), when all Python/Node controls, lock/pin checks, `run_tuple_ci.py --audit-only`, and the three Release package-mode suite profiles run locally, then every check passes with exact measured totals and zero skips.
+- Given Platform's pin to the latest released Builds version and its unified owner cohort, when all Python/Node controls, lock/pin checks, `run_tuple_ci.py --audit-only`, and the three Release package-mode suite profiles run locally, then every check passes with exact measured totals and zero skips.
 - Given Story 2.14's six acceptance criteria and settled owner decisions, when audited on the final tree, then every in-scope criterion holds and `spec-2-14-retire-sdk42-catalog-views.md` is no longer `in-progress`.
 
 ### Review Findings
 
 BMAD review of `e51cf194..03aff5d3` on 2026-11-28, including Builds 6.9.2 and Parties 4.0.2.
 
-- [ ] [Review][Patch] Validate the effective EventStore catalog default [eng/verify-platform-pins.py:34]. An authenticated body with the only declaration inside an MSBuild target passes the verifier even though the evaluated property is unset. An inactive parent group, a space inside the condition's quoted value, and a differently cased override produce related false positives. Cover these cases with regression checks.
-- [ ] [Review][Patch] Verify all three tuple invocations and their evidence paths [.github/workflows/tuple-ci.yml:282]. All 85 source-release tests still pass after removing the `base` invocation and upload path, which would omit 28 required executions and their receipt.
-- [ ] [Review][Patch] Exercise the current suite's control dispatch before restore [eng/run_tuple_ci.py:379]. Normal-path dispatch can be removed with all 58 related Python tests still passing. Assert that both controls execute and that a failing control stops the runner before restore.
-- [ ] [Review][Patch] Make the ambient SDK override control detect loss of environment isolation [eng/test_current_catalog_view.py:197]. Passing the unrestricted process environment to MSBuild still passes the test. The synthetic catalog assigns the SDK property unconditionally. Use a conditional catalog default and assert that the ambient SDK value would change the result without isolation.
-- [ ] [Review][Patch] Run each offline catalog control once in combined verification [eng/test_tuple_sdk_suites.py:8]. Importing the six-case `TestCase` causes the documented combined invocation to discover it in both modules. Schedule the class explicitly in the workflow and keep its local discovery in its own module.
-- [x] [Review][Defer] Complete exact Release verification for Builds 6.9.2 and Parties 4.0.2 [eng/builds-tuple.json:3]. The full 485-execution result covers Builds 6.9.1 and Parties 4.0.1. The later tuple needs a receipt with all 430 current, 28 base, and 27 extension executions and zero skips. The prior run timed out on seven current cases.
+- [x] [Review][Patch] Validate the effective EventStore catalog default [eng/verify-platform-pins.py:34]. The verifier requires one declaration in an unconditional top-level group and recognizes only the empty-value default condition. Tests reject a target-only declaration, a conditional group, a quoted space, and a case-insensitive duplicate.
+- [x] [Review][Patch] Verify all three tuple invocations and their evidence paths [.github/workflows/tuple-ci.yml:283]. A workflow test executes the preflight step with stub commands and checks the suite arguments and upload paths.
+- [x] [Review][Patch] Exercise the current suite's control dispatch before restore [eng/run_tuple_ci.py:379]. An entry-point test checks both command receipts and verifies that failure in either control stops the runner before restore.
+- [x] [Review][Patch] Make the ambient SDK override control detect loss of environment isolation [eng/test_current_catalog_view.py:196]. The synthetic catalog uses a conditional default. Passing the unrestricted process environment changes the observed SDK and fails the test.
+- [x] [Review][Patch] Run each offline catalog control once in combined verification [.github/workflows/tuple-ci.yml:239]. The workflow schedules the fault class explicitly and the combined local command discovers its six tests once.
+- [x] [Review][Defer] Complete exact Release verification on the latest released Builds version [eng/builds-tuple.json:3]. Platform adopted Builds 6.10.0 at `4b7fb065` with Parties 4.0.2. Its receipt must cover all 430 current, 28 base, and 27 extension executions with zero skips.
 - [x] [Review][Defer] Reconcile the three cases shared by `current` and `extensions` [eng/tuple-ci-current-suites.json:294]. The two profiles ran the same methods against the same collector before the rename. Reconcile the overlap with the approved suite counts when changing the inventories.
 - [x] [Review][Defer] Verify the effective Parties package pins in the catalog audit [eng/current_catalog_view.py:131]. The existing audit tests the Parties default property. A consumer-specific package override with the default still intact can pass the graph audit. The full tuple path checks the restored Parties package versions separately.
 - [x] [Review][Defer] Reconcile the generated Epic 2 context [_bmad-output/implementation-artifacts/epic-2-context.md:32]. Restore the explicit attachment hold fields and distinguish the required host-evidence job, generated package-lock checks, and the scoped NuGet locked-mode restore. This extends the existing agent-context follow-up.
@@ -94,6 +94,10 @@ BMAD review of `e51cf194..03aff5d3` on 2026-11-28, including Builds 6.9.2 and Pa
 At `03aff5d3`, the review passed the pin and committed owner-source checks, 212 Python test executions, 85 source-release controls, 14 extension gate controls, and 37 extension-release controls. All three local graph audits resolved EventStore 5.6.0 across 33 projects. The cached Builds 6.9.2 and both changed Parties 4.0.2 archives matched their recorded lock hashes and passed NuGet signature verification in offline mode. Release builds of the Composition and AttemptStore test projects succeeded. Direct xUnit runs passed 28/28 `base`, 27/27 `extensions`, and 423/430 `current` with zero skips across completed groups. The local run timed out in `PlatformCurrentOwnerPackageTests` (2), `PlatformPartiesCatalogHandoffTests` (2), and `PlatformCurrentPackageArtifactTests` (3). The passed totals include reruns after correcting loopback proxy configuration and the published tool archive layout. The full 485-execution result below covers the earlier Builds 6.9.1 tuple.
 
 The follow-up review of the same range independently passed 86 Python tests, 85 source-release tests, the pin check, and the source and declaration identity checks for EventStore, Parties, Tenants, and Memories. It reproduced the EventStore pin false positive with real MSBuild, the suite and dispatch coverage gaps, and the duplicate discovery of all six offline catalog tests. The affected workflow and engineering files match `76535674`. The follow-up used the recorded Release results above.
+
+After the five patches, the pin check and all 208 Python controls passed on Builds 6.9.3 at `d72ec18a`. All 86 source-release controls passed. Targeted tests caught each intentional regression in a disposable checkout.
+
+The Builds 6.9.3 attempt authenticated the tool archive and exact owner source identities at `d72ec18a`. Both the local and hosted package-mode Release builds stopped before xUnit. The local compiler reported missing `PreparedNativeBuild` and `CompositionRunPlan.PreparedNativeBuild`. Builds 6.10.0 includes those APIs, and Platform adopted it at `4b7fb065`. [Platform Tuple CI](https://github.com/Hexalith/Hexalith.Platform/actions/runs/46125709454) · [Builds 6.10.0 release](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v6.10.0)
 
 #### Rejected
 
@@ -118,6 +122,8 @@ The follow-up review of the same range independently passed 86 Python tests, 85 
 - **Post-review patches & rerun verification (2026-11-28):** Applied all 7 review patches (suite-control helper & tests in `eng/run_tuple_ci.py`/`eng/test_builds_tuple.py`; stray word removal in `eng/tuple-source-preparation.md`; authenticate-before-parse & single unconditioned `HexalithEventStoreVersion` check in `eng/verify-platform-pins.py`; removed dead `sdk_version`/`OPENAPI_PACKAGES` in `eng/current_catalog_view.py` and added offline real-MSBuild `verify_unified_catalog` test; added retired-file and disjoint-selector guards in `eng/test_tuple_collectors.py`/`eng/test_tuple_sdk_suites.py`; cleaned stale comments/synthetic `4.2.0` literals) and deferred 1 agent-context entry (`epic-2-context.md`) to `deferred-work.md`. Reran full verification: Python controls `212/212`, pins/locks pass, Node/ext `85/14/37`, collection-graph `1/1`, `--audit-only` `3/3` (`graph-verified 5.6.0 33`), Release build `0 Error(s)`, `PlatformProductionModelClosureTests` `1/1`, `git diff --check` clean.
 
 ## Spec Change Log
+
+- 2026-11-28. The maintainer directed that further verification run only on the latest released Builds version. Platform adopted Builds 6.10.0 at `4b7fb065`. Earlier run results document their original inputs.
 
 ## Review Triage Log
 
