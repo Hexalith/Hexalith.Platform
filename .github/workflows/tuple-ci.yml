@@ -236,6 +236,7 @@ jobs:
           node --test eng/test-extension-release/gate.test.mjs
           python3 -B eng/test-extension-release/run-controls.py
           python3 -B eng/test_tuple_sdk_suites.py
+          python3 -B eng/test_current_catalog_view.py UnifiedCatalogFaultTests
           python3 -B eng/test_builds_publication.py
           python3 -B eng/test_builds_tool_lock.py
       - name: Verify exact candidate and initialize only owner-declared direct dependencies

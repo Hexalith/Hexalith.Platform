@@ -5,7 +5,6 @@ import hashlib
 import os
 import subprocess
 from pathlib import Path
-import tempfile
 import unittest
 from unittest.mock import patch
 import xml.etree.ElementTree as ET
@@ -195,13 +194,11 @@ class UnifiedCatalogFaultTests(unittest.TestCase):
             verify_unified_catalog(mutated, hashlib.sha256(mutated).hexdigest())
 
     def test_evaluate_views_isolates_ambient_overrides_and_supports_single_consumer_probe(self):
-        raw = unified_catalog_body(sdk="5.6.0")
-        with tempfile.TemporaryDirectory() as directory:
-            poison = Path(directory) / "poison.props"
-            poison.write_text('<Project><PropertyGroup><HexalithEventStoreVersion>99.0.0</HexalithEventStoreVersion></PropertyGroup></Project>')
-            with patch.dict(os.environ, {"HexalithEventStoreVersion": "99.0.0", "UseHexalithProjectReferences": "true",
-                                         "CustomAfterMicrosoftCommonProps": str(poison), "DirectoryPackagesPropsPath": str(poison)}):
-                observed = evaluate_views(raw, consumer_names=("Unqualified.Consumer",))
+        document = ET.fromstring(unified_catalog_body(sdk="5.6.0"))
+        default = document.find("PropertyGroup/HexalithEventStoreVersion")
+        default.set("Condition", "'$(HexalithEventStoreVersion)' == ''")
+        with patch.dict(os.environ, {"HexalithEventStoreVersion": "99.0.0"}):
+            observed = evaluate_views(ET.tostring(document), consumer_names=("Unqualified.Consumer",))
         self.assertEqual(len(observed), 1)
         self.assertEqual(observed[0]["Identity"], "Unqualified.Consumer")
         self.assertEqual(observed[0]["Sdk"], "5.6.0")

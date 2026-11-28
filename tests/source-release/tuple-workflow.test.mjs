@@ -130,6 +130,27 @@ test('candidate execution authenticates initialized owners and package identitie
   assert.ok(check < steps.findIndex(step => step.run?.includes('eng/run_tuple_ci.py')));
 });
 
+test('tuple execution runs every required suite and retains its evidence directory', () => {
+  const steps = workflow.jobs.tuple.steps;
+  const preflight = steps.find(step => step.id === 'preflight');
+  const suites = ['current', 'base', 'extensions'];
+  const directories = suites.map(suite => `artifacts/tuple-ci-${suite}`);
+  const result = spawnSync('bash', ['-c', [
+    'python3() { printf "%s\\n" "$*"; }',
+    'dotnet() { :; }',
+    preflight.run,
+  ].join('\n')], { encoding: 'utf8' });
+  assert.equal(result.status, 0, result.stderr);
+  assert.deepEqual(result.stdout.trim().split('\n'), suites.map((suite, index) =>
+    `eng/run_tuple_ci.py --evidence ${directories[index]} --suite ${suite}`));
+
+  const upload = steps.find(step => step.uses?.startsWith('actions/upload-artifact@'));
+  assert.deepEqual(upload.with.path.trim().split('\n'), [
+    '${{ runner.temp }}/platform-tuple-bootstrap',
+    ...directories,
+  ]);
+});
+
 test('source resolution refuses Builds tag drift and execution binds the checkout to the recorded gitlink', () => {
   const resolution = workflow.jobs['resolve-sources'].steps;
   const tag = resolution.findIndex(step => step.run?.includes('eng/builds_publication.py --revision "$PLATFORM_CANDIDATE_SHA"'));

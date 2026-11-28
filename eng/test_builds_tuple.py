@@ -177,7 +177,7 @@ class CatalogTests(unittest.TestCase):
 
 
 class PreflightTests(unittest.TestCase):
-    """Drive run_tuple_ci's audit path with synthetic owners; real Builds/Git reads are mocked per call."""
+    """Drive tuple preflight with synthetic owners and mocked subprocesses."""
 
     def setUp(self):
         temporary = tempfile.TemporaryDirectory()
@@ -378,6 +378,44 @@ class PreflightTests(unittest.TestCase):
         for invalid in ("current42", "base42", "unknown"):
             with self.subTest(suite=invalid), self.assertRaises(ValueError):
                 run_tuple_ci.suite_controls(invalid)
+
+    def test_current_preflight_runs_both_controls_and_stops_before_restore_on_failure(self):
+        owner, _ = self.owner("current-controls", "tuple-ci-current-suites.json", run_tuple_ci.REQUIRED_TOTALS["current"])
+        revision = "3" * 40
+        controls = {
+            "historical-security-package-controls": "eng/test_historical_security_packages.py",
+            "gitlink-catalog-view-controls": "eng/test_current_catalog_view.py",
+        }
+        sequence = [*controls, "restore"]
+        for blocker in sequence:
+            with self.subTest(blocker=blocker), contextlib.ExitStack() as stack:
+                evidence = self.root / ("current-" + blocker)
+
+                def command(argv, **kwargs):
+                    if argv[:2] == ["git", "diff"]:
+                        return subprocess.CompletedProcess(argv, 0, "", "")
+                    if argv[:2] == ["git", "rev-parse"]:
+                        kwargs["stdout"].write(revision if argv[-1] == "HEAD" else SOURCE)
+                    elif len(argv) > 1 and argv[1].endswith("prepare_builds_artifacts.py"):
+                        kwargs["stdout"].write(str(self.root / "synthetic-verified-tool"))
+                    elif argv[:2] == ["dotnet", "msbuild"]:
+                        kwargs["stdout"].write(json.dumps({"Items": {"ProjectReference": [], "Reference": []}}))
+                    blocked = controls.get(blocker) in argv or (blocker == "restore" and argv[:2] == ["dotnet", "restore"])
+                    return subprocess.CompletedProcess(argv, int(blocked))
+
+                stack.enter_context(patch.dict(run_tuple_ci.os.environ, {
+                    "CI": "true", "GITHUB_ACTIONS": "true", "PLATFORM_CANDIDATE_SHA": revision,
+                }))
+                self.preflight(stack, owner, ["--evidence", str(evidence), "--suite", "current"],
+                               [SOURCE.encode(), BLOB.encode(), self.catalog_body], command, lock("6.0.5"))
+                with self.assertRaisesRegex(RuntimeError, blocker + " failed"):
+                    run_tuple_ci.main()
+                receipt = json.loads((evidence / "tuple-ci-result.json").read_bytes())
+                completed = [(item["name"], item["exitCode"]) for item in receipt["commands"] if item["name"] in sequence]
+                expected = [(name, 0) for name in sequence[:sequence.index(blocker)]] + [(blocker, 1)]
+                self.assertEqual(completed, expected)
+                self.assertEqual(receipt["status"], "failed")
+                self.assertIs(receipt["candidateAcceptance"], False)
 
 
 class ArtifactIdentityTests(unittest.TestCase):

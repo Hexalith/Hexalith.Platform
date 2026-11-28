@@ -30,12 +30,23 @@ try:
 except ValueError as failure:
     raise SystemExit(str(failure)) from failure
 properties = ET.fromstring(catalog_body)
-values = {item.tag: item.text for group in properties.findall("PropertyGroup") for item in group if item.text}
-eventstore_entries = properties.findall(".//HexalithEventStoreVersion")
-if len(eventstore_entries) != 1 or not (eventstore_entries[0].text or "").strip() \
-        or re.sub(r"\s+", "", eventstore_entries[0].get("Condition", "")) not in ("", "'$(HexalithEventStoreVersion)'==''"):
-    raise SystemExit("HexalithEventStoreVersion: the file AppHost requires one unconditional catalog default.")
-values["HexalithEventStoreVersion"] = eventstore_entries[0].text.strip()
+property_groups = properties.findall("PropertyGroup")
+values = {item.tag: item.text for group in property_groups for item in group if item.text}
+eventstore_property = "HexalithEventStoreVersion"
+# MSBuild property names are case-insensitive. Count declarations even outside the default group.
+eventstore_entries = [item for item in properties.iter() if item.tag.casefold() == eventstore_property.casefold()]
+default_error = f"{eventstore_property}: the file AppHost requires one catalog default in an unconditional top-level PropertyGroup."
+if len(eventstore_entries) != 1:
+    raise SystemExit(default_error)
+eventstore_default = eventstore_entries[0]
+version = (eventstore_default.text or "").strip()
+condition = eventstore_default.get("Condition", "").strip()
+default_condition = r"'\$\(HexalithEventStoreVersion\)'\s*==\s*''"
+if (not version
+        or not any(eventstore_default in group and not group.get("Condition") for group in property_groups)
+        or (condition and not re.fullmatch(default_condition, condition, flags=re.IGNORECASE))):
+    raise SystemExit(default_error)
+values[eventstore_property] = version
 selected = {
     "Aspire.AppHost.Sdk": values["HexalithAspireAppHostSdkVersion"],
     "Hexalith.EventStore.Aspire": values["HexalithEventStoreVersion"],

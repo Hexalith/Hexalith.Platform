@@ -4,8 +4,6 @@ from pathlib import Path
 import tempfile
 import unittest
 
-# Run the offline catalog fault controls with this pre-dependency suite; the gitlink catalog controls run in run_tuple_ci.
-from test_current_catalog_view import UnifiedCatalogFaultTests  # noqa: F401
 from run_tuple_ci import (COMPOSITION_TEST_DEPENDENCIES, REQUIRED_TOTALS, validate_profile, verify_collecting_cohort,
                           verify_test_sdk)
 

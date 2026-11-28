@@ -5,6 +5,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+import xml.etree.ElementTree as ET
 
 SCRIPT = pathlib.Path(__file__).with_name("verify-platform-pins.py")
 
@@ -104,6 +105,34 @@ class VerifyPlatformPinsTests(unittest.TestCase):
                 self.assertEqual(result.returncode, expected, result.stdout + result.stderr)
                 if expected:
                     self.assertIn("HexalithEventStoreVersion", result.stderr)
+
+    def test_eventstore_default_refuses_inactive_or_ambiguous_authenticated_catalog_entries(self):
+        for fault in ("conditional-group", "target-only", "quoted-space", "case-insensitive-duplicate"):
+            with self.subTest(fault=fault), tempfile.TemporaryDirectory() as directory:
+                root = pathlib.Path(directory)
+                catalog = ET.fromstring(CATALOG)
+                group = catalog.find("PropertyGroup")
+                entry = group.find("HexalithEventStoreVersion")
+                if fault == "conditional-group":
+                    group.remove(entry)
+                    ET.SubElement(catalog, "PropertyGroup", Condition="'$(MSBuildProjectName)' == 'Other'").append(entry)
+                elif fault == "target-only":
+                    group.remove(entry)
+                    target = ET.SubElement(catalog, "Target", Name="SetEventStoreVersion")
+                    ET.SubElement(target, "PropertyGroup").append(entry)
+                elif fault == "quoted-space":
+                    entry.set("Condition", "'$(HexalithEventStoreVersion)' == ' '")
+                else:
+                    ET.SubElement(group, "hexalithEventStoreVersion").text = "9.0.0"
+                raw = ET.tostring(catalog)
+                (root / "catalog.props").write_bytes(raw)
+                (root / "apphost.cs").write_text(APPHOST.format(sdk="13.6.1", dapr="9.9.9", eventstore="#:package Hexalith.EventStore.Aspire@3.120.0"))
+                (root / "spine.md").write_text(SPINE)
+                result = subprocess.run([sys.executable, str(SCRIPT), "--root", str(root), "--catalog", str(root / "catalog.props"),
+                    "--catalog-sha256", hashlib.sha256(raw).hexdigest(), "--spine", str(root / "spine.md")],
+                    capture_output=True, text=True, timeout=30)
+                self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+                self.assertIn("HexalithEventStoreVersion", result.stderr)
 
     def test_file_host_uses_canonical_mapped_dependencies(self):
         for override, expected in [("", 0), (' Version="3.119.0"', 1), (' VersionOverride="3.119.0"', 1)]:
