@@ -44,6 +44,80 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
         var owners = PlatformCatalogContractBinding.Resolve(options, servers);
         string build = Path.Combine(workspace, "catalog-reader");
         CompositionWorkspace.CreatePrivateDirectory(build);
+        string readerEntry;
+        string[]? packageFolders;
+        if (options.RunPlan?.PreparedNativeBuild is not null)
+        {
+            readerEntry = PlatformPreparedNativeBuild.Entry(options, "catalog-reader");
+            if (Path.GetFileName(readerEntry) != "Hexalith.Platform.CatalogBuilder.dll")
+                throw PlatformPreparedNativeBuild.Refusal();
+            string readerOutput = Path.GetDirectoryName(readerEntry)!;
+            packageFolders = [Path.Combine(readerOutput, "packages")];
+            string assetsDirectory = Path.Combine(build, "obj");
+            CompositionWorkspace.CreatePrivateDirectory(assetsDirectory);
+            File.Copy(Path.Combine(readerOutput, "restore-evidence.json"), Path.Combine(assetsDirectory, "project.assets.json"), overwrite: true);
+        }
+        else
+        {
+            readerEntry = CompileReader(options, owners, workspace, build, audited: false);
+            // Read the restored package folders before any pending output exists, so a refusal leaves nothing behind.
+            packageFolders = ownerPackages is null ? null : ReaderPackageFolders(build);
+        }
+        string pending = Path.Combine(workspace, "catalog-pending-" + Guid.NewGuid().ToString("N"));
+        CompositionWorkspace.CreatePrivateDirectory(pending);
+        string request = Path.Combine(build, "request.json");
+        File.WriteAllBytes(request, JsonSerializer.SerializeToUtf8Bytes(new
+        {
+            ownerPackageLock = ownerPackages?.Path, packageFolders,
+            currentOwnerArtifacts = options.CurrentOwnerProof?.Bodies.Where(pair => pair.Key is "Hexalith.Parties.Contracts" or "Hexalith.Parties.EventStoreExtensions").ToDictionary(),
+            generation = options.CatalogGeneration, instanceId = instance, outputDirectory = pending,
+            gatewayAppId = servers.Single(server => server.ResourceId == "eventstore").AppId,
+            sourceMappingHash = options.Mapping.ContentHash, mode = options.Mapping.Mode.ToString().ToLowerInvariant(),
+            committedPredecessor = options.CommittedRoutingCatalogPath is { } predecessor ? Path.GetFullPath(predecessor) : null,
+            committedPredecessorRootDigest = options.CommittedRoutingCatalogRootDigest,
+            owners = owners.Select(owner => new { assembly = owner.Assembly, adapterAssembly = owner.AdapterAssembly, appId = owner.AppId }).ToArray(),
+        }));
+        try
+        {
+            var run = CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("dotnet", [readerEntry, request], build, null),
+                ReaderTimeout(TimeSpan.FromMinutes(1), options.RunPlan?.StartupDeadlineUtc, DateTimeOffset.UtcNow), CancellationToken.None).GetAwaiter().GetResult();
+            File.WriteAllText(Path.Combine(build, "generation.log"), run.Output + run.ErrorOutput);
+            if (run.ExitCode != 0 || run.TimedOut) throw new InvalidDataException($"Owner routing catalog generation refused; see {Path.Combine(build, "generation.log")}.");
+            byte[] bytes = File.ReadAllBytes(Path.Combine(pending, "catalog.json"));
+            byte[] verifiedReceipt = File.ReadAllBytes(Path.Combine(pending, "receipt.json"));
+            using var receipt = JsonDocument.Parse(verifiedReceipt);
+            // AR-12: every owner package the reader loaded is recorded against its lock-verified archive member.
+            _ = ownerPackages?.VerifyReceipt(receipt.RootElement, RunBound(options));
+            options.CurrentOwnerProof?.VerifyReader(receipt.RootElement);
+            string root = receipt.RootElement.GetProperty("rootDigest").GetString()!;
+            if (receipt.RootElement.GetProperty("instanceId").GetString() != instance) throw new InvalidDataException("Cross-run catalog binding refused.");
+            var catalog = RouteCatalogCodec.Decode(bytes, root);
+            if (options.FixturePackageProof is not null) PlatformFixturePackageQualification.VerifyReader(catalog, receipt.RootElement);
+            string target = Path.Combine(workspace, instance);
+            if (System.IO.Directory.Exists(target))
+            {
+                if (!File.ReadAllBytes(Path.Combine(target, "catalog.json")).AsSpan().SequenceEqual(bytes)) throw new InvalidDataException("The run already owns different valid catalog bytes.");
+                System.IO.Directory.Delete(pending, true);
+            }
+            else System.IO.Directory.Move(pending, target);
+            if (completePackageLock is not null) File.WriteAllBytes(Path.Combine(target, "complete-package-reader-receipt.json"), verifiedReceipt);
+            if (options.CurrentOwnerProof is not null) File.WriteAllBytes(Path.Combine(target, "current-reader-receipt.json"), verifiedReceipt);
+            if (options.FixturePackageProof is not null) File.WriteAllBytes(Path.Combine(target, "fixture-reader-receipt.json"), verifiedReceipt);
+            return new(instance, target, Path.Combine(target, "catalog.json"), root, catalog,
+                receipt.RootElement.GetProperty("ownerAssemblies").EnumerateArray().Select(value => value.GetString()!).ToArray(),
+                receipt.RootElement.GetProperty("adapterAssemblies").EnumerateArray().Select(value => value.GetString()!).ToArray());
+        }
+        catch
+        {
+            if (System.IO.Directory.Exists(pending)) System.IO.Directory.Delete(pending, true);
+            throw;
+        }
+    }
+
+    /// <summary>Compiles the owner-selected reader once, without producing runtime catalog identities or credentials.</summary>
+    internal static string CompileReader(PlatformCompositionOptions options, IReadOnlyList<PlatformCatalogContractBinding> owners, string workspace, string build, bool audited)
+    {
+        CompositionWorkspace.CreatePrivateDirectory(build);
         string template = Path.Combine(options.PlatformRoot, "src", "Hexalith.Platform.CatalogBuilder");
         string project = Path.Combine(build, "Hexalith.Platform.CatalogBuilder.csproj");
         string templateProject = Path.Combine(template, "Hexalith.Platform.CatalogBuilder.csproj");
@@ -78,7 +152,7 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
         new XDocument(new XElement("Project", references)).Save(props);
         string output = Path.Combine(build, "output");
         var start = CompositionProcess.CreateStartInfo("dotnet", ["build", project, "-c", options.Mapping.Mode == WorkspaceMode.Source ? "Debug" : "Release",
-            "--output", output, "-m:1", "-nodeReuse:false", "--disable-build-servers", "-p:GeneratePackageOnBuild=false", "-p:CentralPackageVersionsFileImported=true", "-p:PlatformCatalogBindings=" + props, "--nologo", .. packageArguments], options.PlatformRoot,
+            "--output", output, "-m:1", "-nodeReuse:false", "--disable-build-servers", "-p:GeneratePackageOnBuild=false", "-p:CentralPackageVersionsFileImported=true", "-p:PlatformCatalogBindings=" + props, "--nologo", .. (audited ? new[] { "-p:NuGetAudit=true", "-p:NuGetAuditMode=all", "-p:NuGetAuditLevel=low", "-p:RestoreForceEvaluate=true" } : []), .. packageArguments], options.PlatformRoot,
             options.Mapping.Mode == WorkspaceMode.Source ? SourceMappingMaterializer.Environment(options.Mapping, mappingWorkspace) : null);
         var compiled = CompositionProcess.RunAsync(start, ReaderTimeout(TimeSpan.FromMinutes(5), packageReaderDeadline ?? options.RunPlan?.StartupDeadlineUtc, DateTimeOffset.UtcNow), CancellationToken.None).GetAwaiter().GetResult();
         string buildLog = Path.Combine(build, "build.log");
@@ -94,57 +168,7 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
             };
             throw new InvalidDataException($"{reader} build {failure}");
         }
-        // Read the restored package folders before any pending output exists, so a refusal leaves nothing behind.
-        string[]? packageFolders = ownerPackages is null ? null : ReaderPackageFolders(build);
-        string pending = Path.Combine(workspace, "catalog-pending-" + Guid.NewGuid().ToString("N"));
-        CompositionWorkspace.CreatePrivateDirectory(pending);
-        string request = Path.Combine(build, "request.json");
-        File.WriteAllBytes(request, JsonSerializer.SerializeToUtf8Bytes(new
-        {
-            ownerPackageLock = ownerPackages?.Path, packageFolders,
-            currentOwnerArtifacts = options.CurrentOwnerProof?.Bodies.Where(pair => pair.Key is "Hexalith.Parties.Contracts" or "Hexalith.Parties.EventStoreExtensions").ToDictionary(),
-            generation = options.CatalogGeneration, instanceId = instance, outputDirectory = pending,
-            gatewayAppId = servers.Single(server => server.ResourceId == "eventstore").AppId,
-            sourceMappingHash = options.Mapping.ContentHash, mode = options.Mapping.Mode.ToString().ToLowerInvariant(),
-            committedPredecessor = options.CommittedRoutingCatalogPath is { } predecessor ? Path.GetFullPath(predecessor) : null,
-            committedPredecessorRootDigest = options.CommittedRoutingCatalogRootDigest,
-            owners = owners.Select(owner => new { assembly = owner.Assembly, adapterAssembly = owner.AdapterAssembly, appId = owner.AppId }).ToArray(),
-        }));
-        try
-        {
-            var run = CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("dotnet", [Path.Combine(output, "Hexalith.Platform.CatalogBuilder.dll"), request], build, null),
-                ReaderTimeout(TimeSpan.FromMinutes(1), options.RunPlan?.StartupDeadlineUtc, DateTimeOffset.UtcNow), CancellationToken.None).GetAwaiter().GetResult();
-            File.WriteAllText(Path.Combine(build, "generation.log"), run.Output + run.ErrorOutput);
-            if (run.ExitCode != 0 || run.TimedOut) throw new InvalidDataException($"Owner routing catalog generation refused; see {Path.Combine(build, "generation.log")}.");
-            byte[] bytes = File.ReadAllBytes(Path.Combine(pending, "catalog.json"));
-            byte[] verifiedReceipt = File.ReadAllBytes(Path.Combine(pending, "receipt.json"));
-            using var receipt = JsonDocument.Parse(verifiedReceipt);
-            // AR-12: every owner package the reader loaded is recorded against its lock-verified archive member.
-            _ = ownerPackages?.VerifyReceipt(receipt.RootElement, RunBound(options));
-            options.CurrentOwnerProof?.VerifyReader(receipt.RootElement);
-            string root = receipt.RootElement.GetProperty("rootDigest").GetString()!;
-            if (receipt.RootElement.GetProperty("instanceId").GetString() != instance) throw new InvalidDataException("Cross-run catalog binding refused.");
-            var catalog = RouteCatalogCodec.Decode(bytes, root);
-            if (options.FixturePackageProof is not null) PlatformFixturePackageQualification.VerifyReader(catalog, receipt.RootElement);
-            string target = Path.Combine(workspace, instance);
-            if (System.IO.Directory.Exists(target))
-            {
-                if (!File.ReadAllBytes(Path.Combine(target, "catalog.json")).AsSpan().SequenceEqual(bytes)) throw new InvalidDataException("The run already owns different valid catalog bytes.");
-                System.IO.Directory.Delete(pending, true);
-            }
-            else System.IO.Directory.Move(pending, target);
-            if (completePackageLock is not null) File.WriteAllBytes(Path.Combine(target, "complete-package-reader-receipt.json"), verifiedReceipt);
-            if (options.CurrentOwnerProof is not null) File.WriteAllBytes(Path.Combine(target, "current-reader-receipt.json"), verifiedReceipt);
-            if (options.FixturePackageProof is not null) File.WriteAllBytes(Path.Combine(target, "fixture-reader-receipt.json"), verifiedReceipt);
-            return new(instance, target, Path.Combine(target, "catalog.json"), root, catalog,
-                receipt.RootElement.GetProperty("ownerAssemblies").EnumerateArray().Select(value => value.GetString()!).ToArray(),
-                receipt.RootElement.GetProperty("adapterAssemblies").EnumerateArray().Select(value => value.GetString()!).ToArray());
-        }
-        catch
-        {
-            if (System.IO.Directory.Exists(pending)) System.IO.Directory.Delete(pending, true);
-            throw;
-        }
+        return Path.Combine(output, "Hexalith.Platform.CatalogBuilder.dll");
     }
 
     /// <summary>Run-built Parties bodies keep their run-bound authority; every other owner body is lock-verified.</summary>

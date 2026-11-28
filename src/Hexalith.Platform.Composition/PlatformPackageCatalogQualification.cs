@@ -189,7 +189,9 @@ internal static class PlatformPackageCatalogQualification
             if (PlatformFixturePackageQualification.Selects(options)) names.Add("Hexalith.Memories.Contracts");
         }
 
-        IReadOnlyList<string> folders = OwnerPackageLock.PackageFolders(typeof(PlatformPackageCatalogQualification).Assembly);
+        IReadOnlyList<string> folders = options.RunPlan?.PreparedNativeBuild is { } prepared
+            ? [Path.Combine(Path.GetDirectoryName(prepared.VerifyEntry(options.RunPlan.Workspace, PreparedNativeBuild.ModelRole))!, "packages")]
+            : OwnerPackageLock.PackageFolders(typeof(PlatformPackageCatalogQualification).Assembly);
         IReadOnlyList<OwnerPackageIdentity> selected = owners.VerifyLoaded(names, folders);
         Assembly[] loaded = AssemblyLoadContext.Default.Assemblies.Where(assembly => !assembly.IsDynamic
             && OwnerPackageLock.IsOwnerPackage(assembly.GetName().Name)

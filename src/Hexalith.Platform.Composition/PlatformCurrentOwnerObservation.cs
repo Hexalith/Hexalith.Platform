@@ -20,7 +20,7 @@ internal static class PlatformCurrentOwnerObservation
         if (!notification.TryGetCurrentState("parties", out ResourceEvent? resource)
             || !int.TryParse(resource.Snapshot.Properties.FirstOrDefault(property => property.Name == "executable.pid")?.Value?.ToString(), out int launcher))
             throw new InvalidDataException("The current Parties process identity is unavailable.");
-        string output = Path.Combine(proof.Artifacts, "bin", "Hexalith.Parties", "release");
+        string output = proof.OutputDirectory;
         var running = ReadRunningOwners(launcher, output, proof.Bodies);
         int pid = running.Process;
         IReadOnlyDictionary<string, string> runtime = running.Bodies;

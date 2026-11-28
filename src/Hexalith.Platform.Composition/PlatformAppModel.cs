@@ -75,6 +75,20 @@ public static class PlatformAppModel
     {
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(plan);
+        if (plan.PreparedNativeBuild is not null) throw PlatformPreparedNativeBuild.Refusal();
+        ComposeRun(builder, plan, signingKey, seedProject, static options => options);
+    }
+
+    /// <summary>Composes the owner-verified native Release outputs selected by the Builds runner.</summary>
+    public static void ComposePreparedRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, string signingKey, string? seedProject)
+    {
+        ArgumentNullException.ThrowIfNull(builder);
+        ArgumentNullException.ThrowIfNull(plan);
+        if (plan.PreparedNativeBuild is null || plan.SourceMapping?.Mode != WorkspaceMode.Package
+            || plan.PlatformActiveModule != "parties" || plan.SelectedTest is null || plan.SelectedTests.Count == 0
+            || !builder.Environment.IsDevelopment() || !builder.ExecutionContext.IsRunMode
+            || plan.CandidatePolicy is not null || plan.QualificationOwners is not null)
+            throw PlatformPreparedNativeBuild.Refusal();
         ComposeRun(builder, plan, signingKey, seedProject, static options => options);
     }
 
@@ -86,24 +100,7 @@ public static class PlatformAppModel
         string root = mapping.PlatformIdentity?.PlatformPath ?? mapping.Entries.Single(e => e.Identity == "Hexalith.Platform").Path!;
         bool timesheets = PlatformTimesheetsBinding.SelectRun(plan, root, builder.Configuration.GetValue<bool>("Platform:Timesheets:Enabled"));
         bool complete = plan.PlatformActiveModule == PlatformDeclarationSet.CompleteModule;
-        Dictionary<string, string> configuration = new(StringComparer.Ordinal);
-        if (!complete)
-        {
-            foreach (string server in new[] { "conversations/domain", "conversations/api", "parties/domain", "eventstore/gateway", "tenants/domain", "tenants/api", "memories/server", "memories/domain", "memories/clock", "memories/telemetry" })
-            {
-                configuration[server + "/Authentication:JwtBearer:SigningKey"] = signingKey;
-                configuration[server + "/Authentication:JwtBearer:Issuer"] = CompositionEnvironment.TokenIssuer;
-                configuration[server + "/Authentication:JwtBearer:Audience"] = CompositionEnvironment.TokenAudience;
-                configuration[server + "/Authentication:JwtBearer:ValidAudiences"] = JsonSerializer.Serialize(new[] { CompositionEnvironment.TokenAudience });
-            }
-            foreach (string server in new[] { "tenants/domain", "tenants/api" })
-            {
-                configuration[server + "/EventStore:Authentication:SigningKey"] = signingKey;
-                configuration[server + "/EventStore:Authentication:Issuer"] = CompositionEnvironment.TokenIssuer;
-                configuration[server + "/EventStore:Authentication:Audience"] = CompositionEnvironment.TokenAudience;
-                configuration[server + "/Jwt:SigningKey"] = signingKey;
-            }
-        }
+        Dictionary<string, string> configuration = RunnerConfiguration(signingKey, complete);
         if (plan.PlatformActiveModule == PlatformFixturePackageQualification.Module && mapping.Mode == WorkspaceMode.Package)
             configuration[PlatformFixturePackageQualification.MarkerKey] = PlatformFixturePackageQualification.Marker;
 
@@ -123,7 +120,9 @@ public static class PlatformAppModel
             {
                 var declarations = PlatformDeclarationSet.Load(options);
                 PlatformPartiesPackageCatalogQualification.Bind(options, declarations, PlatformServerBindings.Resolve(options, declarations), developmentRun);
-                var current = PlatformCurrentOwnerProof.Create(options, signingKey, developmentRun);
+                var current = plan.PreparedNativeBuild is null
+                    ? PlatformCurrentOwnerProof.Create(options, signingKey, developmentRun)
+                    : PlatformCurrentOwnerProof.CreatePrepared(options, signingKey);
                 options = options with { CurrentOwnerProof = current, PartiesRunProof = current.Parent };
             }
         }
@@ -131,6 +130,30 @@ public static class PlatformAppModel
             options = options with { FixturePackageProof = PlatformFixturePackageQualification.Authenticate(options, signingKey) };
 
         Compose(builder, configureOptions(options));
+    }
+
+    /// <summary>Creates the runner-scoped input bindings that are kept in memory.</summary>
+    internal static Dictionary<string, string> RunnerConfiguration(string signingKey, bool complete)
+    {
+        Dictionary<string, string> configuration = new(StringComparer.Ordinal);
+        if (!complete)
+        {
+            foreach (string server in new[] { "conversations/domain", "conversations/api", "parties/domain", "eventstore/gateway", "tenants/domain", "tenants/api", "memories/server", "memories/domain", "memories/clock", "memories/telemetry" })
+            {
+                configuration[server + "/Authentication:JwtBearer:SigningKey"] = signingKey;
+                configuration[server + "/Authentication:JwtBearer:Issuer"] = CompositionEnvironment.TokenIssuer;
+                configuration[server + "/Authentication:JwtBearer:Audience"] = CompositionEnvironment.TokenAudience;
+                configuration[server + "/Authentication:JwtBearer:ValidAudiences"] = JsonSerializer.Serialize(new[] { CompositionEnvironment.TokenAudience });
+            }
+            foreach (string server in new[] { "tenants/domain", "tenants/api" })
+            {
+                configuration[server + "/EventStore:Authentication:SigningKey"] = signingKey;
+                configuration[server + "/EventStore:Authentication:Issuer"] = CompositionEnvironment.TokenIssuer;
+                configuration[server + "/EventStore:Authentication:Audience"] = CompositionEnvironment.TokenAudience;
+                configuration[server + "/Jwt:SigningKey"] = signingKey;
+            }
+        }
+        return configuration;
     }
 
     /// <summary>Retains the exact verified ordinary Parties runner snapshot, including dynamically evaluated reader versions.</summary>
@@ -237,6 +260,18 @@ public static class PlatformAppModel
             return server;
         }
 
+        Dictionary<string, string> preparedOwners = new(StringComparer.Ordinal);
+        if (options.RunPlan?.PreparedNativeBuild is not null)
+        {
+            foreach (PlatformServerBinding server in servers.Where(server => server.ProjectPath is not null))
+                preparedOwners.Add(server.ResourceId, server.ResourceId switch
+                {
+                    "eventstore" => PlatformPreparedNativeBuild.EventStoreEntry(options, server),
+                    "parties" when options.CurrentOwnerProof is not null => PlatformPreparedNativeBuild.Entry(options, "owner.parties"),
+                    _ => throw PlatformPreparedNativeBuild.Refusal(),
+                });
+        }
+
         string components = options.ComponentsDirectory ?? Path.Combine(options.PlatformRoot, "DaprComponents", "reference");
         string? selectedDaprHome = options.RunPlan?.DaprHome ?? Environment.GetEnvironmentVariable("HEXALITH_DAPR_HOME");
         string daprHome = selectedDaprHome ?? Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
@@ -317,8 +352,9 @@ public static class PlatformAppModel
             PlatformServerBinding? gatewayBinding = servers.FirstOrDefault(server => server.ResourceId == "eventstore");
             // A composed host keeps the EventStore server's own settings; its generated bindings add only the declared packages.
             string? gatewayContentRoot = gatewayBinding?.ProjectPath is { } gatewayProject
-                ? PlatformGatewayConfiguration.Create(gatewayBinding.EventStoreHost?.ServerProject ?? gatewayProject, rendered, servers, options.FixturePackageProof?.Settings) : null;
-            string? gatewayExtensionBindings = gatewayBinding?.EventStoreHost is { } composedHost
+                ? PlatformGatewayConfiguration.Create(preparedOwners.GetValueOrDefault("eventstore")
+                    ?? gatewayBinding.EventStoreHost?.ServerProject ?? gatewayProject, rendered, servers, options.FixturePackageProof?.Settings) : null;
+            string? gatewayExtensionBindings = !preparedOwners.ContainsKey("eventstore") && gatewayBinding?.EventStoreHost is { } composedHost
                 ? PlatformEventStoreExtensionBindings.Write(composedHost, Path.Combine(rendered, "eventstore-extensions")) : null;
 
             var (sentry, certificates) = DaprSelfHostedMtls.AddSentry(builder, sentryConfiguration, options.PlatformRoot, rendered, sentryPort, options.RetentionProfile is null ? null : PlatformRetentionProfile.RuntimeVersion, checkouts);
@@ -381,31 +417,39 @@ public static class PlatformAppModel
                 if (server.ProjectPath is { } projectPath)
                 {
                     IResourceBuilder<ProjectResource> project = builder.AddProject(server.ResourceId, projectPath, launchProfileName: null)
-                        .WithAnnotation(new PlatformServerAnnotation(server))
-                        .WithAnnotation(new ExecutableAnnotation { Command = "dotnet", WorkingDirectory = Path.GetDirectoryName(projectPath)! })
-                        .WithArgs("run", "--project", projectPath, "--configuration", options.Mapping.Mode == WorkspaceMode.Source ? "Debug" : "Release", "--no-launch-profile", "-p:GeneratePackageOnBuild=false");
-                    // The signed package payload can be extracted without an executable mode.
-                    // Let dotnet run host the managed EventStore payload in the private build directory.
-                    if (server.ResourceId == "eventstore" && options.Mapping.Mode == WorkspaceMode.Package && projectPath == options.EventStoreSeedProject)
-                        project.WithArgs("-p:UseAppHost=false");
-                    if (server.EventStoreHost is not null) project.WithArgs("-p:" + PlatformEventStoreExtensionBindings.BindingsProperty + "=" + gatewayExtensionBindings);
-                    if (server.ResourceId == "eventstore" && options.FixturePackageProof is { } fixture)
+                        .WithAnnotation(new PlatformServerAnnotation(server));
+                    if (preparedOwners.TryGetValue(server.ResourceId, out string? preparedEntry))
                     {
-                        fixtureProtection!.Configure(project);
-                        const string prefix = "Platform__SignedFixtureQualification__";
-                        project.WithEnvironment(prefix + "Workspace", options.RunPlan!.Workspace)
-                            .WithEnvironment(prefix + "RunId", fixture.Producer.RunId)
-                            .WithEnvironment(prefix + "Version", fixture.Producer.Version)
-                            .WithEnvironment(prefix + "ArchiveSha256", fixture.Producer.ArchiveSha256)
-                            .WithEnvironment(prefix + "LibrarySha256", fixture.Producer.LibrarySha256);
+                        project.WithAnnotation(new ExecutableAnnotation { Command = "dotnet", WorkingDirectory = Path.GetDirectoryName(preparedEntry)! })
+                            .WithArgs(preparedEntry);
                     }
-                    if (options.UsePrebuiltProjects || options.CurrentOwnerProof is not null && server.ResourceId == "parties") project.WithArgs("--no-build", "--no-restore");
-                    if (options.RetentionProfile is not null)
-                        project.WithArgs("--artifacts-path", RetentionArtifactsPath(options, server));
-                    else if (options.CurrentOwnerProof is { } measured && server.ResourceId == "parties")
-                        project.WithArgs("--artifacts-path", measured.Artifacts);
-                    else if (options.RunPlan is { } buildRun && (buildRun.SelectedTest is not null || options.CompleteRunner))
-                        project.WithArgs("--artifacts-path", Path.Combine(buildRun.Workspace, "project-builds", server.ResourceId));
+                    else
+                    {
+                        project.WithAnnotation(new ExecutableAnnotation { Command = "dotnet", WorkingDirectory = Path.GetDirectoryName(projectPath)! })
+                            .WithArgs("run", "--project", projectPath, "--configuration", options.Mapping.Mode == WorkspaceMode.Source ? "Debug" : "Release", "--no-launch-profile", "-p:GeneratePackageOnBuild=false");
+                        // The signed package payload can be extracted without an executable mode.
+                        // Let dotnet run host the managed EventStore payload in the private build directory.
+                        if (server.ResourceId == "eventstore" && options.Mapping.Mode == WorkspaceMode.Package && projectPath == options.EventStoreSeedProject)
+                            project.WithArgs("-p:UseAppHost=false");
+                        if (server.EventStoreHost is not null) project.WithArgs("-p:" + PlatformEventStoreExtensionBindings.BindingsProperty + "=" + gatewayExtensionBindings);
+                        if (server.ResourceId == "eventstore" && options.FixturePackageProof is { } fixture)
+                        {
+                            fixtureProtection!.Configure(project);
+                            const string prefix = "Platform__SignedFixtureQualification__";
+                            project.WithEnvironment(prefix + "Workspace", options.RunPlan!.Workspace)
+                                .WithEnvironment(prefix + "RunId", fixture.Producer.RunId)
+                                .WithEnvironment(prefix + "Version", fixture.Producer.Version)
+                                .WithEnvironment(prefix + "ArchiveSha256", fixture.Producer.ArchiveSha256)
+                                .WithEnvironment(prefix + "LibrarySha256", fixture.Producer.LibrarySha256);
+                        }
+                        if (options.UsePrebuiltProjects || options.CurrentOwnerProof is not null && server.ResourceId == "parties") project.WithArgs("--no-build", "--no-restore");
+                        if (options.RetentionProfile is not null)
+                            project.WithArgs("--artifacts-path", RetentionArtifactsPath(options, server));
+                        else if (options.CurrentOwnerProof is { } measured && server.ResourceId == "parties")
+                            project.WithArgs("--artifacts-path", measured.Artifacts);
+                        else if (options.RunPlan is { } buildRun && (buildRun.SelectedTest is not null || options.CompleteRunner))
+                            project.WithArgs("--artifacts-path", Path.Combine(buildRun.Workspace, "project-builds", server.ResourceId));
+                    }
                     if (server.ResourceId == "timesheets")
                     {
                         project.WithHttpEndpoint(name: "public")
@@ -422,7 +466,7 @@ public static class PlatformAppModel
                     if (server.ResourceId == "eventstore") project.WithEnvironment("ASPNETCORE_CONTENTROOT", gatewayContentRoot!);
                     if (PlatformDeclarationSet.Id(server.Module.Declaration) == "memories" && vectors is not null && graph is not null)
                         project.WithEnvironment("ConnectionStrings__redis", ReferenceExpression.Create($"{vectors.GetEndpoint("tcp").Property(EndpointProperty.Host)}:{vectors.GetEndpoint("tcp").Property(EndpointProperty.Port)}")).WithEnvironment("ConnectionStrings__falkordb", ReferenceExpression.Create($"{graph.GetEndpoint("tcp").Property(EndpointProperty.Host)}:{graph.GetEndpoint("tcp").Property(EndpointProperty.Port)}")).WaitFor(vectors).WaitFor(graph);
-                    foreach (KeyValuePair<string, string> pair in SourceMappingMaterializer.Environment(options.Mapping, options.CurrentOwnerProof is { } currentMapping && server.ResourceId == "parties" ? currentMapping.MappingWorkspace : mappingWorkspace)) project.WithEnvironment(pair.Key, pair.Value);
+                    foreach (KeyValuePair<string, string> pair in SourceMappingMaterializer.Environment(options.Mapping, options.CurrentOwnerProof is { } currentMapping && server.ResourceId == "parties" && options.RunPlan?.PreparedNativeBuild is null ? currentMapping.MappingWorkspace : mappingWorkspace)) project.WithEnvironment(pair.Key, pair.Value);
                     projects.Add(server.ResourceId, project);
                 }
                 else

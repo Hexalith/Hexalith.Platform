@@ -23,17 +23,19 @@ internal sealed class PlatformCurrentOwnerProof
     private readonly PlatformCurrentOwnerSourceState _source;
 
     private PlatformCurrentOwnerProof(PlatformCompositionOptions options, string key, string directory, IReadOnlyDictionary<string, string> bodies,
-        OwnerPackageLock owners, IReadOnlyDictionary<string, OwnerPackageIdentity> ownerPackages, IReadOnlyDictionary<string, string> files, PlatformCurrentOwnerSourceState source)
+        OwnerPackageLock owners, IReadOnlyDictionary<string, OwnerPackageIdentity> ownerPackages, IReadOnlyDictionary<string, string> files, PlatformCurrentOwnerSourceState source,
+        string? preparedOutput = null, IReadOnlyDictionary<string, string>? preparedPackages = null)
     {
         Parent = PlatformPartiesRunProof.Create(options, key);
         source.RequireUnchanged(ActiveRoot(options), source.Revision, options.RunPlan!.StartupDeadlineUtc);
         _source = source;
         Directory = directory;
+        OutputDirectory = preparedOutput ?? Path.Combine(Artifacts, "bin", "Hexalith.Parties", "release");
         OwnerPackages = owners;
         SdkVersion = PlatformServerBindings.Version(options, "eventstore", "Parties Release preparation");
         Bodies = bodies;
         OwnerBodies = ownerPackages;
-        PackageArchives = files.Where(pair => pair.Key.EndsWith(".nupkg", StringComparison.Ordinal)).ToDictionary(pair => Path.GetFileName(pair.Key), pair => pair.Value, StringComparer.Ordinal);
+        PackageArchives = preparedPackages ?? files.Where(pair => pair.Key.EndsWith(".nupkg", StringComparison.Ordinal)).ToDictionary(pair => Path.GetFileName(pair.Key), pair => pair.Value, StringComparer.Ordinal);
         _files = files;
         _key = Convert.FromBase64String(key);
         _receipt = JsonSerializer.Serialize(new
@@ -77,6 +79,7 @@ internal sealed class PlatformCurrentOwnerProof
     internal string SdkVersion { get; }
     internal string Directory { get; }
     internal string Artifacts => Path.Combine(Directory, "build");
+    internal string OutputDirectory { get; }
     internal string MappingWorkspace => Path.Combine(Directory, "owner-mapping");
     internal string Cache => Path.Combine(Directory, "reader-packages");
     internal string ReaderConfig => Path.Combine(Directory, "reader.nuget.config");
@@ -87,7 +90,7 @@ internal sealed class PlatformCurrentOwnerProof
     internal IReadOnlyDictionary<string, OwnerPackageIdentity> OwnerBodies { get; }
     internal IReadOnlyDictionary<string, string> PackageArchives { get; }
 
-    internal static PlatformCurrentOwnerProof Create(PlatformCompositionOptions options, string key, bool developmentRun)
+    internal static PlatformCurrentOwnerProof Create(PlatformCompositionOptions options, string key, bool developmentRun, bool audited = false)
     {
         if (!developmentRun || !OperatingSystem.IsLinux() || RuntimeInformation.ProcessArchitecture != Architecture.X64
             || options.Mapping.Entries.Any(entry => entry.Identity is not ("Hexalith.Parties" or "Hexalith.Platform") && (entry.Origin != "package" || entry.Path is not null))
@@ -131,7 +134,8 @@ internal sealed class PlatformCurrentOwnerProof
         string[] arguments = ["-c", "Release", "--artifacts-path", artifacts, "-p:GeneratePackageOnBuild=false",
             "-p:HexalithPinnedModelCatalogBuild=true",
             "-p:HexalithPartiesPackageVersion=" + version, "-p:ContinuousIntegrationBuild=true", "-p:RepositoryCommit=" + revision, "-p:RepositoryUrl=https://github.com/Hexalith/Hexalith.Parties", "-p:RestoreConfigFile=" + publicConfig,
-            "-m:1", "-nodeReuse:false", "--disable-build-servers", "--nologo"];
+            "-m:1", "-nodeReuse:false", "--disable-build-servers", "--nologo",
+            .. (audited ? new[] { "-p:NuGetAudit=true", "-p:NuGetAuditMode=all", "-p:NuGetAuditLevel=low", "-p:RestoreForceEvaluate=true" } : [])];
         Run(["build", project, .. arguments], "runtime-build.log");
         foreach (string name in new[] { "Hexalith.Parties.Contracts", "Hexalith.Parties.EventStoreExtensions" })
         {
@@ -219,6 +223,66 @@ internal sealed class PlatformCurrentOwnerProof
             File.WriteAllText(Path.Combine(directory, log), result.Output + result.ErrorOutput);
             if (result.ExitCode != 0 || result.TimedOut || result.OutputTruncated) throw PreparationFailure(log, result);
         }
+    }
+
+    /// <summary>Issues the same current-run owner proof from the already sealed Release components.</summary>
+    internal static PlatformCurrentOwnerProof CreatePrepared(PlatformCompositionOptions options, string key)
+    {
+        string entry = PlatformPreparedNativeBuild.Entry(options, "owner.parties");
+        string reader = PlatformPreparedNativeBuild.Entry(options, "catalog-reader");
+        if (Path.GetFileName(entry) != "Hexalith.Parties.dll" || Path.GetFileName(reader) != "Hexalith.Platform.CatalogBuilder.dll"
+            || !OperatingSystem.IsLinux() || RuntimeInformation.ProcessArchitecture != Architecture.X64
+            || !SelectsIntegration(options) || options.PartiesRunProof?.Matches(options) != true)
+            throw Refusal();
+
+        OwnerPackageLock owners = PlatformPackageCatalogQualification.RequireLockedPackages(options);
+        CompositionRunPlan plan = options.RunPlan!;
+        string active = ActiveRoot(options);
+        string revision = Git(active, "rev-parse", "HEAD");
+        PlatformCurrentOwnerSourceState source = PlatformCurrentOwnerSourceState.Capture(active, revision, plan.StartupDeadlineUtc);
+        VerifyDeclaration(options.DeclarationPaths.Single(), plan.PlatformDeclarationHash!, source);
+        string output = Path.GetDirectoryName(entry)!;
+        string readerOutput = Path.GetDirectoryName(reader)!;
+        string dependencyGraph = Path.ChangeExtension(entry, ".deps.json");
+        using JsonDocument graph = JsonDocument.Parse(File.ReadAllBytes(dependencyGraph));
+        var ownerPackages = owners.VerifyDirectory(graph.RootElement, [Path.Combine(output, "packages")], output, RunBuiltBodies)
+            .ToDictionary(identity => identity.Assembly, StringComparer.Ordinal);
+        if (ObservedSdk.Any(name => !ownerPackages.ContainsKey(name))) throw Refusal();
+
+        Dictionary<string, string> files = new(source.Inputs, StringComparer.Ordinal) { [owners.Path] = owners.Sha256 };
+        Dictionary<string, string> bodies = new(StringComparer.Ordinal);
+        foreach (string name in new[] { "Hexalith.Parties", "Hexalith.Parties.Contracts", "Hexalith.Parties.Projections", "Hexalith.Parties.Authentication", "Hexalith.Parties.Security" })
+        {
+            string path = Path.Combine(output, name + ".dll");
+            bodies[name] = files[path] = Hash(path);
+        }
+        Dictionary<string, string> archives = new(StringComparer.Ordinal);
+        foreach (string name in RunBuiltBodies)
+        {
+            string readerBody = Path.Combine(readerOutput, name + ".dll");
+            string digest = Hash(readerBody);
+            if (bodies.TryGetValue(name, out string? measured) && measured != digest) throw Refusal();
+            bodies[name] = files[readerBody] = digest;
+            string version = PlatformServerBindings.Version(options, "parties", "current owner");
+            string archive = Path.Combine(readerOutput, "packages", name.ToLowerInvariant(), version, OwnerPackageLock.ArchiveName(name, version));
+            using ZipArchive package = ZipFile.OpenRead(archive);
+            using Stream member = package.GetEntry("lib/" + PreparationTargetFramework + "/" + name + ".dll")?.Open() ?? throw Refusal();
+            if (Convert.ToHexStringLower(SHA256.HashData(member)) != digest) throw Refusal();
+            using Stream nuspec = package.GetEntry(name + ".nuspec")?.Open() ?? throw Refusal();
+            var metadata = System.Xml.Linq.XDocument.Load(nuspec).Descendants().Single(element => element.Name.LocalName == "metadata");
+            if (metadata.Elements().Single(element => element.Name.LocalName == "id").Value != name
+                || metadata.Elements().Single(element => element.Name.LocalName == "version").Value != version
+                || (string?)metadata.Elements().Single(element => element.Name.LocalName == "repository").Attribute("commit") != revision)
+                throw Refusal();
+            archives[name + "." + version + ".nupkg"] = files[archive] = Hash(archive);
+        }
+        foreach (string dependency in new[] { "owner.parties", "catalog-reader" })
+        {
+            var component = plan.PreparedNativeBuild!.Components[PreparedNativeBuild.CompositionRole(PlatformPreparedNativeBuild.Profile(options), dependency)];
+            string directory = dependency == "owner.parties" ? output : readerOutput;
+            foreach (var file in component.Files) files[Path.Combine(directory, file.Key)] = file.Value;
+        }
+        return new(options, key, plan.Workspace, bodies, owners, ownerPackages, files, source, output, archives);
     }
 
     /// <summary>Retains only finite preparation phases, process status and bounded public diagnostic codes.</summary>

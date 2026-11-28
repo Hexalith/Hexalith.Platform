@@ -30,6 +30,8 @@ internal static class PlatformSourceStateWorker
     /// <summary>Runs the private child entry point; ordinary composition consumers continue loading this assembly.</summary>
     private static int Main(string[] arguments)
     {
+        if (arguments is ["--prepare-native-companion", string planPath])
+            return PlatformNativeBuildProducer.Run(planPath);
         if (arguments is not ["--source-state-hash"]) return 1;
         try
         {
